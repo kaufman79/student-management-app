@@ -15,12 +15,18 @@ class MainWindow(QMainWindow):
 
         # menu items
         file_menu_item = self.menuBar().addMenu("&File")
+        edit_menu_item = self.menuBar().addMenu("&Edit")
         help_menu_item = self.menuBar().addMenu("&Help")
 
         # file menu actions
         add_student_action = QAction("Add Student", self)
         add_student_action.triggered.connect(self.insert)  # give a method as argument, but without calling it.
         file_menu_item.addAction(add_student_action)
+
+        # edit menu actions
+        search_student_action = QAction("Search for student", self)
+        search_student_action.triggered.connect(self.search)
+        edit_menu_item.addAction(search_student_action)
 
         # help menu actions
         about_action = QAction("About", self)
@@ -48,6 +54,10 @@ class MainWindow(QMainWindow):
         dialog = InsertDialog()
         dialog.exec()
 
+    def search(self):
+        dialog = SearchDialog()
+        dialog.exec()
+
 
 class InsertDialog(QDialog):
     def __init__(self):
@@ -56,8 +66,8 @@ class InsertDialog(QDialog):
         self.setFixedWidth(300)
         self.setFixedHeight(300)
 
-# need a layout for this window. Could use a grid as before, but actually the
-# widgets will be all vertical, so we will use a vertical layout
+        # need a layout for this window. Could use a grid as before, but actually the
+        # widgets will be all vertical, so we will use a vertical layout
         layout = QVBoxLayout()
 
         # add student name widget
@@ -95,6 +105,27 @@ class InsertDialog(QDialog):
         cursor.close()
         connection.close()
         main_window.load_data()
+
+
+class SearchDialog(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Insert Student Data")
+        self.setFixedWidth(300)
+        self.setFixedHeight(300)
+        layout = QVBoxLayout()
+
+        # add name search box
+        search_name = QLineEdit()
+        search_name.setPlaceholderText("Name")
+        layout.addWidget(search_name)
+
+        # add search button
+        search_button = QPushButton("Search")
+        # search_button.clicked.connect(self.search_student)
+        layout.addWidget(search_button)
+
+        self.setLayout(layout)
 
 
 app = QApplication(sys.argv)
