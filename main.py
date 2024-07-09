@@ -1,8 +1,8 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication, QLabel, QWidget, QGridLayout, \
     QLineEdit, QPushButton, QMainWindow, QTableWidget, QTableWidgetItem, \
-    QDialog, QVBoxLayout, QComboBox
-from PyQt6.QtGui import QAction
+    QDialog, QVBoxLayout, QComboBox, QToolBar
+from PyQt6.QtGui import QAction, QIcon
 import sys
 import sqlite3
 
@@ -20,12 +20,12 @@ class MainWindow(QMainWindow):
         help_menu_item = self.menuBar().addMenu("&Help")
 
         # file menu actions
-        add_student_action = QAction("Add Student", self)
+        add_student_action = QAction(QIcon("icons/add.png"), "Add Student", self)
         file_menu_item.addAction(add_student_action)
         add_student_action.triggered.connect(self.insert)  # give a method as argument, but without calling it.
 
         # edit menu actions
-        search_student_action = QAction("Search for student", self)
+        search_student_action = QAction(QIcon("icons/search.png"), "Search for student", self)
         edit_menu_item.addAction(search_student_action)
         search_student_action.triggered.connect(self.search)
 
@@ -40,6 +40,14 @@ class MainWindow(QMainWindow):
         self.table.setHorizontalHeaderLabels(("ID", "Name", "Course", "Mobile"))
         self.table.verticalHeader().setVisible(False)  # this is the row numbers to the left of the table - we disable them
         self.setCentralWidget(self.table)
+
+        # create toolbar and add elements
+        toolbar = QToolBar()
+        toolbar.setMovable(True)
+        self.addToolBar(toolbar)
+
+        toolbar.addAction(add_student_action)
+        toolbar.addAction(search_student_action)
 
     def load_data(self):
         connection = sqlite3.connect("database.db")
