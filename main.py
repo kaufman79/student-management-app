@@ -1,3 +1,4 @@
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication, QLabel, QWidget, QGridLayout, \
     QLineEdit, QPushButton, QMainWindow, QTableWidget, QTableWidgetItem, \
     QDialog, QVBoxLayout, QComboBox
@@ -20,13 +21,13 @@ class MainWindow(QMainWindow):
 
         # file menu actions
         add_student_action = QAction("Add Student", self)
-        add_student_action.triggered.connect(self.insert)  # give a method as argument, but without calling it.
         file_menu_item.addAction(add_student_action)
+        add_student_action.triggered.connect(self.insert)  # give a method as argument, but without calling it.
 
         # edit menu actions
         search_student_action = QAction("Search for student", self)
-        search_student_action.triggered.connect(self.search)
         edit_menu_item.addAction(search_student_action)
+        search_student_action.triggered.connect(self.search)
 
         # help menu actions
         about_action = QAction("About", self)
@@ -116,16 +117,32 @@ class SearchDialog(QDialog):
         layout = QVBoxLayout()
 
         # add name search box
-        search_name = QLineEdit()
-        search_name.setPlaceholderText("Name")
-        layout.addWidget(search_name)
+        self.student_name = QLineEdit()
+        self.student_name.setPlaceholderText("Name")
+        layout.addWidget(self.student_name)
 
         # add search button
         search_button = QPushButton("Search")
-        # search_button.clicked.connect(self.search_student)
+        search_button.clicked.connect(self.search)
         layout.addWidget(search_button)
 
         self.setLayout(layout)
+
+    def search(self):
+        name = self.student_name.text()
+        connection = sqlite3.connect("database.db")
+        cursor = connection.cursor()
+        result = cursor.execute("SELECT * FROM students WHERE name = ?", (name,))
+        rows = list(result)
+        print(rows)
+        # now we search for the name in the db in main_window
+        items = main_window.table.findItems(name, Qt.MatchFlag.MatchFixedString)
+        for item in items:
+            print(item)
+            main_window.table.item(item.row(), 1).setSelected(True)
+
+        cursor.close()
+        connection.close()
 
 
 app = QApplication(sys.argv)
