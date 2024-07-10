@@ -178,6 +178,8 @@ class EditDialog(QDialog):
         connection.close()
         # Refresh the table
         main_window.load_data()
+        # close window
+        self.close()
 
 
 class DeleteDialog(QDialog):
