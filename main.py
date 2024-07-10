@@ -1,5 +1,5 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QApplication, QLabel, QWidget, QGridLayout, \
+from PyQt6.QtWidgets import QApplication, QLabel, QGridLayout, \
     QLineEdit, QPushButton, QMainWindow, QTableWidget, QTableWidgetItem, \
     QDialog, QVBoxLayout, QComboBox, QToolBar, QStatusBar, QMessageBox
 from PyQt6.QtGui import QAction, QIcon
@@ -33,7 +33,7 @@ class MainWindow(QMainWindow):
         # help menu actions
         about_action = QAction("About", self)
         help_menu_item.addAction(about_action)
-        # the following line is needed for mac users for the help menu to show up.
+        # the following line is needed for Mac users for the help menu to show up.
         about_action.setMenuRole(QAction.MenuRole.NoRole)
         about_action.triggered.connect(self.about)
 
@@ -104,6 +104,7 @@ class MainWindow(QMainWindow):
         dialog = AboutDialog()
         dialog.exec()
 
+
 class AboutDialog(QMessageBox):
     def __init__(self):
         super().__init__()
@@ -113,6 +114,7 @@ class AboutDialog(QMessageBox):
         Feel free to modify and reuse this app.
         """
         self.setText(content)
+
 
 class EditDialog(QDialog):
     def __init__(self):
@@ -169,11 +171,11 @@ class EditDialog(QDialog):
         # Refresh the table
         main_window.load_data()
 
+
 class DeleteDialog(QDialog):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Delete Student Data")
-
 
         layout = QGridLayout()
         confirmation = QLabel("Are you sure you want to delete?")
@@ -259,6 +261,7 @@ class InsertDialog(QDialog):
         connection.close()
         main_window.load_data()
         self.close()
+
 
 class SearchDialog(QDialog):
     def __init__(self):
