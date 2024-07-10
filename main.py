@@ -263,7 +263,7 @@ class InsertDialog(QDialog):
 class SearchDialog(QDialog):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Insert Student Data")
+        self.setWindowTitle("Search student names")
         self.setFixedWidth(300)
         self.setFixedHeight(300)
         layout = QVBoxLayout()
@@ -287,7 +287,7 @@ class SearchDialog(QDialog):
         result = cursor.execute("SELECT * FROM students WHERE name = ?", (name,))
         rows = list(result)
         print(rows)
-        # now we search for the name in the db in main_window
+        # now we search for the name in the db in main_window and set it to selected
         items = main_window.table.findItems(name, Qt.MatchFlag.MatchFixedString)
         for item in items:
             print(item)
