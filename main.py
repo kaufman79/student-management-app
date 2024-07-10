@@ -33,7 +33,9 @@ class MainWindow(QMainWindow):
         # help menu actions
         about_action = QAction("About", self)
         help_menu_item.addAction(about_action)
+        # the following line is needed for mac users for the help menu to show up.
         about_action.setMenuRole(QAction.MenuRole.NoRole)
+        about_action.triggered.connect(self.about)
 
         # add the table
         self.table = QTableWidget()
@@ -97,6 +99,20 @@ class MainWindow(QMainWindow):
     def delete(self):
         dialog = DeleteDialog()
         dialog.exec()
+
+    def about(self):
+        dialog = AboutDialog()
+        dialog.exec()
+
+class AboutDialog(QMessageBox):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("about")
+        content = """
+        This app was created during the Udemy course "The Python Mega Course".
+        Feel free to modify and reuse this app.
+        """
+        self.setText(content)
 
 class EditDialog(QDialog):
     def __init__(self):
@@ -170,6 +186,7 @@ class DeleteDialog(QDialog):
         self.setLayout(layout)
 
         yes.clicked.connect(self.delete_student)
+        no.clicked.connect(self.close_dialog)
 
     def delete_student(self):
         # get index and id from selected row
@@ -191,8 +208,8 @@ class DeleteDialog(QDialog):
         confirmation_widget.setText("The record was deleted successfully.")
         confirmation_widget.exec()
 
-
-
+    def close_dialog(self):
+        self.close()
 
 
 class InsertDialog(QDialog):
