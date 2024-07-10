@@ -258,7 +258,7 @@ class InsertDialog(QDialog):
         cursor.close()
         connection.close()
         main_window.load_data()
-
+        self.close()
 
 class SearchDialog(QDialog):
     def __init__(self):
